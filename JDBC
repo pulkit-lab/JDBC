@@ -1,0 +1,65 @@
+import java.sql.*;
+
+/* 
+   Name - Pulkit Kumar Agarwal
+   Roll - 2006036
+*/
+
+public class jdbc {
+  public static void main(String[] args) {
+    try{
+      // Step 1: load the driver
+      Class.forName("com.mysql.cj.jdbc.Driver");
+
+      // Step 2: create database connection
+      String url = "jdbc:mysql://localhost:3306/csl3401";
+      String username = "root";
+      String password = "";
+
+      Connection con = DriverManager.getConnection(url, username, password);
+      
+      /* Step 3: sql query to 
+      1. insert data in table
+      2. show the data of a table in command prompt.
+      3. delete a row from a table.
+      4. update a record in a table
+      */
+      String sql = "INSERT INTO student(`Roll`, `Name`, `Mob Number`) VALUES (1, 'Pulkit', 56678)";
+      String sql1 = "INSERT INTO student(`Roll`, `Name`, `Mob Number`) VALUES (2006036, 'Pulkit', 1233)";
+      String sql2 = "SELECT * FROM `student`";
+      String sql3 = "DELETE FROM `student` WHERE `Roll`=1";
+      String sql4 = "UPDATE `student` SET `Name`='Pulkit Kumar Agarwal' WHERE `Roll`=2006036";
+
+      // Step 4: create statement and process to execute query ans then print the results
+      Statement stmt = con.createStatement();
+
+      int row = stmt.executeUpdate(sql);
+      System.out.println("Number of rows Inserted: " + row);
+
+      int row1 = stmt.executeUpdate(sql1);
+      System.out.println("Number of rows Inserted: " + row1);
+      
+      ResultSet res = stmt.executeQuery(sql2);
+      System.out.println();
+      System.out.println("DATA FROM TABLE: ");
+      System.out.format("%-10s%-25s%-15s%n", "Roll", "Name", "Mob Number");
+      while(res.next()){
+        int roll = res.getInt("Roll");
+        String name = res.getString("Name");
+        int mob = res.getInt("Mob Number");
+        
+        System.out.format("%-10s%-25s%-15s%n", roll, name, mob);
+      }
+      System.out.println();
+
+      int row3 = stmt.executeUpdate(sql3);
+      System.out.println("Number of rows deleted: " + row3);
+
+      int row4 = stmt.executeUpdate(sql4);
+      System.out.println("Number of rows updated: " + row4);
+
+    }catch(Exception e){
+      System.out.println(e);
+    }
+  }
+}
